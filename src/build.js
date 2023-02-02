@@ -9,6 +9,7 @@ const DATA_DIR = './data';
 const OUTPUT_DIR = './dist';
 
 async function main() {
+  // Búa til `./dist` ef ekki til
   if (!(await direxists(OUTPUT_DIR))) {
     await mkdir(OUTPUT_DIR);
   }
@@ -17,6 +18,7 @@ async function main() {
   const results = [];
 
   for (const file of dataFiles) {
+    // eslint-disable-next-line no-await-in-loop
     const content = await readFile(file);
 
     if (content) {
