@@ -18,6 +18,8 @@
   "homepage": "https://github.com/magga98/HBV403G-V1#readme",
   "devDependencies": {
     "browser-sync": "^2.27.11",
-    "jest": "^29.4.1"
+    "jest": "^29.4.1",
+    "stylelint": "^14.16.1",
+    "stylelint-config-primer": "^11.1.1"
   }
 }
