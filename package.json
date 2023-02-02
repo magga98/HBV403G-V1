@@ -4,7 +4,14 @@
   "description": "Verkefni 1",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node ./src/build.js && cpy public dist",
+    "test": "NODE_OPTIONS='--experimental-vm-modules' jest ./*.test.js",
+    "coverage": "NODE_OPTIONS='--experimental-vm-modules' jest --coverage --collectCoverageFrom=\"./src/**/*.js\"",
+    "dev": "browser-sync start --serveStatic ./dist --server --files ./public/styles.css ./dist/*.html",
+    "prettier": "prettier --write .",
+    "lint": "concurrently npm:lint:*",
+    "lint:eslint": "eslint ./src/**/*.js",
+    "lint:stylelint": "stylelint ./public/styles.css"
   },
   "repository": {
     "type": "git",
