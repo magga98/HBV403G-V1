@@ -7,7 +7,6 @@ import { indexTemplate, namskeidTemplate } from './lib/html.js';
 
 // const DATA_DIR = './data';
 const OUTPUT_DIR = './dist';
-const results = []
 
 async function main() {
 
@@ -15,17 +14,17 @@ async function main() {
     await mkdir(OUTPUT_DIR);
   }
 
-  readFile('././data/index.json', async (err, data) => {
+  readFile('./data/index.json', async (err, data) => {
     if (err) throw err;
     const deildir = JSON.parse(data);
 
-    let result = [];
+    const results = [];
     for (const deild in deildir) {
       const deildTitle = deildir[deild].title;
       const deildDescription = deildir[deild].description;
       const filename = deildir[deild].csv;
 
-      result = {
+      const result = {
         deildTitle,
         deildDescription,
         filename
@@ -36,7 +35,8 @@ async function main() {
       const filepath = join(OUTPUT_DIR, filename);
       const template = namskeidTemplate(deildTitle, result);
 
-      writeFile(filepath, template, { flag: 'w+' });
+      // eslint-disable-next-line no-await-in-loop
+      await writeFile(filepath, template, { flag: 'w+' });
     }
   });
 
