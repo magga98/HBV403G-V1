@@ -1,10 +1,9 @@
 /* eslint-disable guard-for-in */
-import { readFile } from 'fs';
 import { mkdir, writeFile } from 'fs/promises';
 import { join } from 'path';
-import { direxists } from './lib/file.js';
-import { indexTemplate, namskeidTemplate } from './lib/html.js';
-
+import { direxists, getStaticProps } from './lib/file.js';
+import { indexTemplate } from './lib/html.js';
+// namskeidTemplate
 // const DATA_DIR = './data';
 const OUTPUT_DIR = './dist';
 
@@ -14,37 +13,18 @@ async function main() {
     await mkdir(OUTPUT_DIR);
   }
 
-  readFile('./data/index.json', async (err, data) => {
-    if (err) throw err;
-    const deildir = JSON.parse(data);
-    const results = [];
+      const result = await getStaticProps;
 
-    for (const deild of deildir) {
-      const deildTitle = deildir[deild].title;
-      const deildDescription = deildir[deild].description;
-      const filename = deildir[deild].html;
-
-      const result = {
-        deildTitle,
-        deildDescription,
-        filename
-      };
-
-      results.push(result);
-
-      const filepath = join(OUTPUT_DIR, filename);
-      const template = namskeidTemplate(deildTitle, result);
+      const filepath = join(OUTPUT_DIR, 'index.html');
+      const template = indexTemplate(result);
 
       // eslint-disable-next-line no-await-in-loop
       await writeFile(filepath, template, { flag: 'w+' });
-    }
-  });
+    };
 
-  console.log(results);
-  const filepath = join(OUTPUT_DIR, 'index.html');
-  const template = indexTemplate(results);
+ // const filepath = join(OUTPUT_DIR, filename);
+  // const template = namskeidTemplate(deildTitle, result);
 
-  await writeFile(filepath, template, { flag: 'w+' });
-}
+  // await writeFile(filepath, template, { flag: 'w+' });
 
 main().catch((err) => console.error(err));

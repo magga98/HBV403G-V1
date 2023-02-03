@@ -10,25 +10,23 @@ function template(title, content) {
   </html>`;
   }
 
-  function index(results) {
-    const list = results
-      .map(
-        (result) => `
-  <li>
-    <a href="${result.filename}">${result.deildTitle}</a>
-    <p>${result.deildDescription}</p>
-  </li>`
-      )
-      .join('\n');
+ export default function index(props) {
+  const posts = props.posts;
+  return (
+    <div>
+      {posts.map(post =>
+        <div
+          key={post.title}
+          style={{ padding: 20, borderBottom: '1px solid #ccc' }}>
+          <h2>{post.description}</h2>
+          <p>{post.csv}</p>
+        </div>)}
+    </div>
+  )
+}
 
-    return `<section>
-    <h1>Kennsluskrá</h1>
-    <ul>${list}</ul>
-  </section>`;
-  }
-
-  export function indexTemplate(results) {
-    return template('Kennsluskrá', index(results));
+  export function indexTemplate(props) {
+    return template('Kennsluskrá', index(props));
   }
 
   export function namskeidTemplate(title, result) {
