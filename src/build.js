@@ -14,11 +14,11 @@ async function main() {
     await mkdir(OUTPUT_DIR);
   }
 
+  const results = [];
   readFile('./data/index.json', async (err, data) => {
     if (err) throw err;
     const deildir = JSON.parse(data);
 
-    const results = [];
     for (const deild in deildir) {
       const deildTitle = deildir[deild].title;
       const deildDescription = deildir[deild].description;
