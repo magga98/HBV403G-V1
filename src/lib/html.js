@@ -1,3 +1,5 @@
+import Head from 'next/head';
+
 function template(title, content) {
     return `<!doctype html>
   <html lang="is">
@@ -10,17 +12,23 @@ function template(title, content) {
   </html>`;
   }
 
- export default function index(props) {
+export default function index(props)
+{
   const posts = props.posts;
   return (
-    <div>
-      {posts.map(post =>
-        <div
-          key={post.title}
-          style={{ padding: 20, borderBottom: '1px solid #ccc' }}>
-          <h2>{post.description}</h2>
-          <p>{post.csv}</p>
-        </div>)}
+      <div style={{ padding: 30 }}>
+      <Head>
+        <title>Kennsluskrá</title>
+      </Head>
+      <div>
+        {posts.map(post =>
+          <div
+            key={post.id}
+            style={{ padding: 20, borderBottom: '1px solid #ccc' }}>
+            <h2>{post.title}</h2>
+            <p>{post.content}</p>
+          </div>)}
+      </div>
     </div>
   )
 }
