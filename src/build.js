@@ -1,47 +1,46 @@
+/* eslint-disable guard-for-in */
+import { readFile } from 'fs';
 import { mkdir, writeFile } from 'fs/promises';
-import path, { join } from 'path';
-import { direxists, readFile, readFilesFromDir } from './lib/file.js';
-import { indexTemplate, statsTemplate } from './lib/html.js';
-import { parse } from './lib/parser.js';
+import { join } from 'path';
+import { direxists } from './lib/file.js';
+import { indexTemplate, namskeidTemplate } from './lib/html.js';
 
-const DATA_DIR = './data';
+// const DATA_DIR = './data';
 const OUTPUT_DIR = './dist';
+const results = []
 
 async function main() {
-  // Búa til `./dist` ef ekki til
+
   if (!(await direxists(OUTPUT_DIR))) {
     await mkdir(OUTPUT_DIR);
   }
 
-  const dataFiles = await readFilesFromDir(DATA_DIR);
-  const results = [];
+  readFile('././data/index.json', async (err, data) => {
+    if (err) throw err;
+    const deildir = JSON.parse(data);
 
-  for (const file of dataFiles) {
-    // eslint-disable-next-line no-await-in-loop
-    const content = await readFile(file);
+    let result = [];
+    for (const deild in deildir) {
+      const deildTitle = deildir[deild].title;
+      const deildDescription = deildir[deild].description;
+      const filename = deildir[deild].csv;
 
-    if (content) {
-      const title = path.basename(file);
-      const numbers = parse(content);
-      const stats = numbers;
-      const filename = `${title}.html`;
-
-      const result = {
-        title,
-        filename,
-        numbers,
-        stats,
+      result = {
+        deildTitle,
+        deildDescription,
+        filename
       };
+
       results.push(result);
 
       const filepath = join(OUTPUT_DIR, filename);
-      const template = statsTemplate(title, result);
+      const template = namskeidTemplate(deildTitle, result);
 
-      // eslint-disable-next-line no-await-in-loop
-      await writeFile(filepath, template, { flag: 'w+' });
+      writeFile(filepath, template, { flag: 'w+' });
     }
-  }
+  });
 
+  console.log(results);
   const filepath = join(OUTPUT_DIR, 'index.html');
   const template = indexTemplate(results);
 
