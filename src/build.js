@@ -14,15 +14,15 @@ async function main() {
     await mkdir(OUTPUT_DIR);
   }
 
-  const results = [];
   readFile('./data/index.json', async (err, data) => {
     if (err) throw err;
     const deildir = JSON.parse(data);
+    const results = [];
 
-    for (const deild in deildir) {
+    for (const deild of deildir) {
       const deildTitle = deildir[deild].title;
       const deildDescription = deildir[deild].description;
-      const filename = deildir[deild].csv;
+      const filename = deildir[deild].html;
 
       const result = {
         deildTitle,
